@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Component\Recusive;
+use App\Models\Category;
 use Illuminate\Http\Request;
+
 
 class CategoryController extends Controller
 {
+    private $category;
+    public function __construct(Category $category)
+    {
+        $this->category = $category;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +31,10 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.add');
+        $data = $this->category->all();
+        $recusive = new Recusive($data);
+        $htmlOption = $recusive->categoyRecusive();
+        return view('category.add', compact('htmlOption'));
     }
 
     /**
@@ -34,7 +45,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->category->create([
+            'name' => $request->name,
+            'parent_id' => $request->parent_id,
+        ]);
+
+        return redirect()->route('categories.index');
     }
 
     /**
