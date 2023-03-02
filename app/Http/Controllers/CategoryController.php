@@ -21,7 +21,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('category.index');
+        // lấy ra các danh mục mới nhất và chỉ lấy 5 danh mục trên 1 trang
+        $categories = $this->category->latest()->paginate(5);
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -31,9 +33,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $data = $this->category->all();
-        $recusive = new Recusive($data);
-        $htmlOption = $recusive->categoyRecusive();
+        $htmlOption = $this->getCategory($parentId = '');
         return view('category.add', compact('htmlOption'));
     }
 
@@ -70,9 +70,19 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function getCategory($parentId)
+    {
+        $data = $this->category->all();
+        $recusive = new Recusive($data);
+        $htmlOption = $recusive->categoyRecusive($parentId);
+        return $htmlOption;
+    }
     public function edit($id)
     {
-        //
+        $category = $this->category->find($id);
+        $htmlOption = $this->getCategory($category->parent_id);
+        return view('category.edit', compact('category', 'htmlOption'));
     }
 
     /**
@@ -84,7 +94,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->category->find($id)->update([
+            'name' => $request->name,
+            'parent_id' => $request->parent_id,
+        ]);
+        return redirect()->route('categories.index');
     }
 
     /**
