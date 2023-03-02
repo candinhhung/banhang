@@ -21,6 +21,21 @@ Route::get('/home', function () {
     return view('home');
 });
 
+Route::prefix('menu')->group(function () {
+    Route::get('/', [
+        'as' => 'menu.index',
+        'uses' => 'MenuController@index'
+    ]);
+    Route::get('/create', [
+        'as' => 'menu.create',
+        'uses' => 'MenuController@create'
+    ]);
+    Route::post('/store', [
+        'as' => 'menu.store',
+        'uses' => 'MenuController@store'
+    ]);
+});
+
 Route::prefix('categories')->group(function () {
     Route::get('/create', [
         'as' => 'categories.create',
