@@ -31,10 +31,8 @@ class MenuController extends Controller
      */
     public function create()
     {
-        $test = Menu::all();
-        dd($test);
-        // $optionSelect = $this->menuRecusive->menuRecusiveAdd();
-        // return view('menu.add', compact('optionSelect'));
+        $optionSelect = $this->menuRecusive->menuRecusiveAdd();
+        return view('menu.add', compact('optionSelect'));
     }
 
     /**

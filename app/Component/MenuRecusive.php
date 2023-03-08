@@ -14,7 +14,7 @@ class MenuRecusive
 
     public function menuRecusiveAdd($parentId = 0, $subMark = '')
     {
-        $data = Menu::where('parent_id', $parentId);
+        $data = Menu::where('parent_id', $parentId)->get();
         foreach ($data as $dataItem) {
             $this->html .= '<option value="' . $dataItem->id . '">' . $subMark . $dataItem->name . '</option>';
             $this->menuRecusiveAdd($dataItem->id, $subMark . '--');
