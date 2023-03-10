@@ -13,9 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'AdminController@loginAdmin');
+Route::post('/', 'AdminController@postLoginAdmin');
 
 Route::get('/home', function () {
     return view('home');
@@ -42,9 +41,9 @@ Route::prefix('menu')->group(function () {
         'as' => 'menu.update',
         'uses' => 'MenuController@update'
     ]);
-    Route::post('/delete', [
+    Route::get('/delete/{id}', [
         'as' => 'menu.delete',
-        'uses' => 'MenuController@delete'
+        'uses' => 'MenuController@destroy'
     ]);
 });
 
