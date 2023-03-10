@@ -34,6 +34,18 @@ Route::prefix('menu')->group(function () {
         'as' => 'menu.store',
         'uses' => 'MenuController@store'
     ]);
+    Route::get('/edit/{id}', [
+        'as' => 'menu.edit',
+        'uses' => 'MenuController@edit'
+    ]);
+    Route::post('/update/{id}', [
+        'as' => 'menu.update',
+        'uses' => 'MenuController@update'
+    ]);
+    Route::post('/delete', [
+        'as' => 'menu.delete',
+        'uses' => 'MenuController@delete'
+    ]);
 });
 
 Route::prefix('categories')->group(function () {

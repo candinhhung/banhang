@@ -30,11 +30,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+                            @foreach ($menu as $menuitem)
+                                    <tr>
+                                        <th scope="row">{{ $menuitem->id }}</th>
+                                        <td>{{ $menuitem->name }}</td>
+                                        <td>
+                                            <a href="{{ route('menu.edit', ['id' => $menuitem->id]) }}"
+                                                class="btn btn-default">Edit</a>
+                                            <a href="{{ route('menu.delete', ['id' => $menuitem->id]) }}"
+                                                class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
-                    
+                    <div class="col-md-12">
+                        {{$menu->links()}}
+                    </div>
                 </div>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->

@@ -26,23 +26,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
         @include('partials.sidebar')
 
         <div class="content-wrapper">
-            @include('partials.content-header', ['name' => 'Menu', 'key' => 'Add'])
+            @include('partials.content-header', ['name' => 'Menu', 'key' => 'Edit'])
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="{{ route('menu.store') }}" method="POST">
+                            <form action="{{ route('menu.update',['id' => $menu->id]) }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <label>Tên Menu</label>
-                                    <input type="text" name="name" class="form-control"
-                                        placeholder="Nhập tên menu">
+                                    <input type="text" name="name" value="{{$menu->name}}" class="form-control"
+                                        >
                                 </div>
                                 <div class="form-group">
                                     <label>Chọn menu cha</label>
-                                    <select class="form-control" name="parent_id">
-                                        <option value="0">Chọn menu cha</option>
+                                    <select class="form-control" name="parent_id" >
+                                        <option value="{{$menu->parent_id}}">Chọn menu cha</option>
                                         {!!$optionSelect!!}
                                     </select>
                                 </div>

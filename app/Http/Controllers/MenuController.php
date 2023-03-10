@@ -21,7 +21,8 @@ class MenuController extends Controller
     }
     public function index()
     {
-        return view('menu.index');
+        $menu = Menu::paginate(5);
+        return view('menu.index',compact('menu'));
     }
 
     /**
@@ -31,10 +32,8 @@ class MenuController extends Controller
      */
     public function create()
     {
-        $test = Menu::all();
-        dd($test);
-        // $optionSelect = $this->menuRecusive->menuRecusiveAdd();
-        // return view('menu.add', compact('optionSelect'));
+        $optionSelect = $this->menuRecusive->menuRecusiveAdd();
+        return view('menu.add',compact('optionSelect'));
     }
 
     /**
@@ -45,7 +44,11 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Menu::create([
+            'name' => $request->name,
+            'parent_id' => $request->parent_id
+        ]);
+        return redirect()->route('menu.index');
     }
 
     /**
@@ -67,7 +70,9 @@ class MenuController extends Controller
      */
     public function edit($id)
     {
-        //
+        $menu = Menu::where('id',$id)->first();
+        $optionSelect = $this->menuRecusive->menuRecusiveEdit($menu->parent_id);
+        return view('menu.edit',compact('optionSelect','menu'));
     }
 
     /**
@@ -79,7 +84,8 @@ class MenuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Menu::where('id',$id)->update(['name' => $request->name,'parent_id' => $request->parent_id]);
+        return redirect()->route('menu.index');
     }
 
     /**
@@ -90,6 +96,6 @@ class MenuController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Menu::find($id)->delete();
     }
 }
