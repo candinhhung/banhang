@@ -23,7 +23,7 @@ class CategoryController extends Controller
     {
         // lấy ra các danh mục mới nhất và chỉ lấy 5 danh mục trên 1 trang
         $categories = $this->category->latest()->paginate(5);
-        return view('category.index', compact('categories'));
+        return view('admin.category.index', compact('categories'));
     }
 
     /**
@@ -34,7 +34,7 @@ class CategoryController extends Controller
     public function create()
     {
         $htmlOption = $this->getCategory($parentId = '');
-        return view('category.add', compact('htmlOption'));
+        return view('admin.category.add', compact('htmlOption'));
     }
 
     /**
@@ -50,7 +50,7 @@ class CategoryController extends Controller
             'parent_id' => $request->parent_id,
         ]);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -82,7 +82,7 @@ class CategoryController extends Controller
     {
         $category = $this->category->find($id);
         $htmlOption = $this->getCategory($category->parent_id);
-        return view('category.edit', compact('category', 'htmlOption'));
+        return view('admin.category.edit', compact('category', 'htmlOption'));
     }
 
     /**
@@ -98,7 +98,7 @@ class CategoryController extends Controller
             'name' => $request->name,
             'parent_id' => $request->parent_id,
         ]);
-        return redirect()->route('categories.index');
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -110,6 +110,6 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $this->category::find($id)->delete();
-        return redirect()->route('categories.index');
+        return redirect()->route('admin.categories.index');
     }
 }

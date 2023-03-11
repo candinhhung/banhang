@@ -22,7 +22,7 @@ class MenuController extends Controller
     public function index()
     {
         $menu = Menu::paginate(5);
-        return view('menu.index', compact('menu'));
+        return view('admin.menu.index', compact('menu'));
     }
 
     /**
@@ -33,7 +33,7 @@ class MenuController extends Controller
     public function create()
     {
         $optionSelect = $this->menuRecusive->menuRecusiveAdd();
-        return view('menu.add', compact('optionSelect'));
+        return view('admin.menu.add', compact('optionSelect'));
     }
 
     /**
@@ -48,7 +48,7 @@ class MenuController extends Controller
             'name' => $request->name,
             'parent_id' => $request->parent_id
         ]);
-        return redirect()->route('menu.index');
+        return redirect()->route('admin.menu.index');
     }
 
     /**
@@ -72,7 +72,7 @@ class MenuController extends Controller
     {
         $menu = Menu::where('id', $id)->first();
         $optionSelect = $this->menuRecusive->menuRecusiveEdit($menu->parent_id);
-        return view('menu.edit', compact('optionSelect', 'menu'));
+        return view('admin.menu.edit', compact('optionSelect', 'menu'));
     }
 
     /**
@@ -85,7 +85,7 @@ class MenuController extends Controller
     public function update(Request $request, $id)
     {
         Menu::where('id', $id)->update(['name' => $request->name, 'parent_id' => $request->parent_id]);
-        return redirect()->route('menu.index');
+        return redirect()->route('admin.menu.index');
     }
 
     /**
@@ -97,6 +97,6 @@ class MenuController extends Controller
     public function destroy($id)
     {
         Menu::find($id)->delete();
-        return redirect()->route('menu.index');
+        return redirect()->route('admin.menu.index');
     }
 }
