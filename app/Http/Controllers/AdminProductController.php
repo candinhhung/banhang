@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Component\Recusive;
+use App\Models\Category;
 
 class AdminProductController extends Controller
 {
@@ -12,7 +14,12 @@ class AdminProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    private $category;
+     public function __construct(Category $category)
+    {
+        $this->category = $category;
+    }
+     public function index()
     {
         return view('admin.product.index');
     }
@@ -24,7 +31,8 @@ class AdminProductController extends Controller
      */
     public function create()
     {
-        //
+        $htmlOption = $this->getCategory($parentId = '');
+        return view('admin.product.add',compact('htmlOption'));
     }
 
     /**
@@ -81,5 +89,12 @@ class AdminProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function getCategory($parentId)
+    {
+        $data = $this->category->all();
+        $recusive = new Recusive($data);
+        $htmlOption = $recusive->categoyRecusive($parentId);
+        return $htmlOption;
     }
 }
